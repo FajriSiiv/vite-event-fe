@@ -7,11 +7,42 @@ const Dashboard = () => {
     router("/event/" + id);
   };
 
+  const logout = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        router("/");
+      } else {
+        alert("Logout failed!");
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+      alert("An error occurred during logout.");
+    }
+  };
+
   return (
     <div className="w-full min-h-screen">
       <div className="grid grid-cols-5 h-full p-5 gap-10">
         <div className="col-span-1 w-full h-full relative">
-          <div className="bg-rose-200 sticky top-10 w-full h-[300px] rounded-md"></div>
+          <div className="bg-[#f3f3f3] sticky top-10 w-full h-[300px] rounded-md flex flex-col gap-y-5 p-3">
+            <button
+              className="w-full rounded-md bg-white py-3"
+              onClick={() => router("/dashboard")}
+            >
+              Events
+            </button>
+            <button
+              className="w-full rounded-md bg-white py-3"
+              onClick={() => router("/admin")}
+            >
+              Admin
+            </button>
+          </div>
         </div>
         <div className="col-span-4 flex flex-col gap-y-2">
           <div className="flex flex-col gap-y-3">
@@ -20,7 +51,7 @@ const Dashboard = () => {
                 <span className="text-sm">Hello, Fajri</span>
                 <div className="h-10 w-10 rounded-full bg-rose-500"></div>
                 <button
-                  onClick={() => router("/")}
+                  onClick={logout}
                   className="bg-rose-400 text-sm px-2 py-1 text-white rounded-md"
                 >
                   Logout
@@ -54,7 +85,6 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <div></div>
       </div>
     </div>
   );
