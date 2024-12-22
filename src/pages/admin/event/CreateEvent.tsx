@@ -1,91 +1,49 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import React, { useEffect, useState } from "react";
 import useUserStore from "../../../context/useUserStore";
-import { format } from "date-fns";
+import { useNavigate } from "react-router";
 import { DayPicker } from "react-day-picker";
+import { format } from "date-fns";
 
-const EventAdmin = () => {
-  const { id } = useParams();
+const CreateEvent = () => {
   const [title, setTitle] = useState("");
   const [date, setDate] = useState<Date | any>();
   const [formatDate, setFormatDate] = useState<any>();
+  const { setIsLoading, isLoading, fetchUser, user }: any = useUserStore();
   const router = useNavigate();
-  const { setIsLoading, isLoading }: any = useUserStore();
-
-  const getEventId = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(
-        `http://localhost:3000/event/${id?.toString()}`,
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
-      const data = await response.json();
-
-      setTitle(data.title);
-      setDate(data.date);
-      setFormatDate(format(data.date, "MM/dd/yyyy"));
-
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleDateSelect = (selectedDate: any) => {
     if (selectedDate) {
       setDate(selectedDate);
       setFormatDate(format(selectedDate, "MM/dd/yyyy"));
+      console.log(typeof formatDate);
     } else {
       setDate(null);
       setFormatDate("");
     }
   };
 
-  const updateEvent = async () => {
-    setIsLoading(true);
-
-    try {
-      const response = await fetch(
-        `http://localhost:3000/event/${id?.toString()}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ title: title, date: formatDate }),
-          credentials: "include",
-        }
-      );
-
-      setIsLoading(false);
-      getEventId();
-
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const deleteEvent = async () => {
+  const eventCreate = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(
-        `http://localhost:3000/event/${id?.toString()}`,
-        {
-          method: "DELETE",
-          credentials: "include",
-        }
-      );
-
+      const response = await fetch(`http://localhost:3000/event`, {
+        body: JSON.stringify({
+          userId: user?.id,
+          title: title,
+          date: formatDate,
+          users: [],
+        }),
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       setIsLoading(false);
 
       if (response.ok) {
         router("/admin");
       } else {
-        alert("Logout failed!");
+        alert("Create event failed!");
       }
     } catch (error) {
       console.log(error);
@@ -93,8 +51,8 @@ const EventAdmin = () => {
   };
 
   useEffect(() => {
-    getEventId();
-  }, []);
+    fetchUser();
+  }, [fetchUser]);
 
   return (
     <div className="max-w-[600px] mx-auto p-5">
@@ -105,7 +63,7 @@ const EventAdmin = () => {
         Back
       </button>
       {!isLoading ? (
-        <form onSubmit={updateEvent} className="flex flex-col gap-y-4">
+        <form onSubmit={eventCreate} className="flex flex-col gap-y-4">
           <div className="h-[200px] bg-[#f3f3f3] w-full rounded-md"></div>
           <div className="flex flex-col gap-y-3">
             <label htmlFor="">Title Event</label>
@@ -143,14 +101,14 @@ const EventAdmin = () => {
             className="py-3 text-sm text-white w-full font-semibold bg-[#ec520b] rounded-full"
             type="submit"
           >
-            Save Update
+            Create New Event
           </button>
-          <button
+          {/* <button
             onClick={deleteEvent}
             className="py-3 text-sm text-white w-full font-semibold bg-rose-500 rounded-full"
           >
             Delete Event
-          </button>
+          </button> */}
         </form>
       ) : (
         <>Loading..</>
@@ -159,4 +117,4 @@ const EventAdmin = () => {
   );
 };
 
-export default EventAdmin;
+export default CreateEvent;

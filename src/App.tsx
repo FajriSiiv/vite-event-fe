@@ -5,6 +5,7 @@ import EventDetail from "./pages/event/eventDetail";
 import AdminPage from "./pages/admin/admin";
 import EventAdmin from "./pages/admin/event/EventAdmin";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import CreateEvent from "./pages/admin/event/CreateEvent";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/event/:id" element={<EventDetail />} />
         <Route path="/admin/event/:id" element={<EventAdmin />} />
+        <Route path="/admin/event/create" element={<CreateEvent />} />
       </Route>
     </Routes>
   );

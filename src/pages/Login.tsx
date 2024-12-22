@@ -1,11 +1,14 @@
 import { useNavigate } from "react-router";
 import loginBg from "../assets/login-bg.jpg";
 import { useState } from "react";
+import useUserStore from "../context/useUserStore";
 
 const Login = () => {
-  const [name, setName] = useState("leon");
+  const [name, setName] = useState("leonerss");
   const [password, setPassword] = useState("hello2");
   const navigate = useNavigate();
+
+  const setUser = useUserStore((state: any) => state.setUser);
 
   const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -19,9 +22,9 @@ const Login = () => {
       credentials: "include",
     });
 
-    const data = await response.json();
-
     if (response.ok) {
+      const data = await response.json();
+      setUser(data.user);
       navigate("/dashboard");
     } else {
       alert("Login failed!");
