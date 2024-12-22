@@ -68,18 +68,17 @@ const EventDetail = () => {
   };
 
   return (
-    <div className="max-w-[600px] mx-auto h-screen p-5 relative">
+    <div className="max-w-[600px] mx-auto h-screen p-5">
+      <button
+        onClick={() => router(-1)}
+        className="absolute top-5 left-5 bg-rose-400 text-sm px-3 py-2 text-white rounded-md"
+      >
+        Back
+      </button>
       {isLoading ? (
         <p>Loading...</p>
       ) : (
         <>
-          <button
-            onClick={() => router(-1)}
-            className="absolute top-5 left-5 bg-rose-400 text-sm px-3 py-2 text-white rounded-md"
-          >
-            Back
-          </button>
-
           <div className="flex flex-col items-center gap-y-6">
             <h1 className="uppercase font-extrabold text-3xl">
               {eventID.title}

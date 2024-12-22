@@ -1,44 +1,73 @@
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import useUserStore from "../../context/useUserStore";
 import { useEffect, useState } from "react";
 
 const AdminPage = () => {
   const router = useNavigate();
   const [allEvents, setAllEvents] = useState([]);
+  const [pages, setPages] = useState(1);
+  const [isReady, setIsReady] = useState(false);
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleEventClick = (id: number) => {
     router("/admin/event/" + id);
   };
 
-  const { user, fetchUser, isLoading, setIsLoading }: any = useUserStore();
+  const { fetchUser, isLoading, setIsLoading }: any = useUserStore();
 
   const getAllEvents = async () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`http://localhost:3000/event?limit=5`, {
-        method: "GET",
-        credentials: "include",
-      });
+      const response = await fetch(
+        `http://localhost:3000/event?limit=4&page=${pages}`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
+
       const data = await response.json();
-      setAllEvents(data.data);
-      setIsLoading(false);
+      setAllEvents(data.data || []);
     } catch (error) {
       console.error("Logout error:", error);
       alert("An error occurred during logout.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
+  const handlePageChange = (newPage: number) => {
+    setPages(newPage);
+    router(`?page=${newPage}`, { replace: true });
+  };
+
   useEffect(() => {
+    const currentPage: any = parseInt(searchParams.get("page") || "1", 10);
+
+    if (!currentPage) {
+      setSearchParams({ page: "1" });
+    } else {
+      setPages(parseInt(currentPage, 10));
+    }
+
+    setIsReady(true);
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (!isReady) return;
+
     getAllEvents();
+    router(`?page=${pages}`, { replace: true });
     fetchUser();
-  }, [fetchUser]);
+  }, [fetchUser, pages, isReady]);
 
   if (isLoading) return <p>Loading..</p>;
 
   return (
-    <div className="w-full h-screen p-5 gap-10 grid grid-cols-5">
-      <div className="col-span-1 w-full h-full relative">
+    <div>
+      {/* <div className="col-span-1 w-full h-full relative">
         <div className="bg-[#f3f3f3] sticky top-10 w-full h-[300px] rounded-md flex flex-col gap-y-5 p-3">
           <button
             className="w-full rounded-md bg-white py-3"
@@ -53,7 +82,7 @@ const AdminPage = () => {
             Admin
           </button>
         </div>
-      </div>
+      </div> */}
       <div className="col-span-4 flex flex-col gap-y-2">
         <div className="flex flex-col gap-y-3">
           <div className="flex justify-end">
@@ -70,7 +99,8 @@ const AdminPage = () => {
           </div>
           <h1 className="text-3xl font-bold">Event yang tersedia</h1>
           <div className="w-full min-h-[220px] bg-[#f3f3f3] p-4 rounded-md grid gap-3 grid-cols-4">
-            {allEvents.map((event: { _id: any }, index) => (
+            {allEvents.length === 0 && !isLoading && <p>No events found.</p>}
+            {allEvents?.map((event: { _id: any }, index) => (
               <div
                 className="bg-slate-400 rounded-md"
                 onClick={() => handleEventClick(event._id)}
@@ -80,6 +110,23 @@ const AdminPage = () => {
               </div>
             ))}
           </div>
+        </div>
+        <div className="flex justify-end items-center gap-10">
+          <button
+            className="bg-[#f3f3f3] py-2 px-4 rounded-md font-semibold disabled:text-gray-400"
+            onClick={() => handlePageChange(pages - 1)}
+            disabled={pages === 1 || pages <= 1 || isLoading}
+          >
+            Prev
+          </button>
+          <span className="font-bold">{pages}</span>
+          <button
+            className="bg-[#f3f3f3] py-2 px-4 rounded-md font-semibold"
+            onClick={() => handlePageChange(pages + 1)}
+            disabled={isLoading}
+          >
+            Next
+          </button>
         </div>
       </div>
 
