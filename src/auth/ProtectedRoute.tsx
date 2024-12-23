@@ -3,13 +3,14 @@ import toast from "react-hot-toast";
 import { Navigate, Outlet } from "react-router";
 
 const ProtectedRoute = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [loading, setLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch("http://localhost:3000/event", {
+        const response = await fetch(apiUrl + "/event", {
           method: "GET",
           credentials: "include",
         });

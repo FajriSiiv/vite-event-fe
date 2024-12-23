@@ -4,6 +4,7 @@ import useUserStore from "../../context/useUserStore";
 import toast from "react-hot-toast";
 
 const EventDetail = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [eventID, setEventID] = useState<any>([]);
   const router = useNavigate();
   const { id } = useParams();
@@ -12,7 +13,7 @@ const EventDetail = () => {
   const getEventId = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`http://localhost:3000/event/${id}`, {
+      const response = await fetch(`${apiUrl}/event/${id}`, {
         method: "GET",
         credentials: "include",
       });
@@ -28,17 +29,14 @@ const EventDetail = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(
-        `http://localhost:3000/event/addUser/${id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId: user.id }),
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${apiUrl}/event/addUser/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: user.id }),
+        credentials: "include",
+      });
       const data = await response.json();
       setIsLoading(false);
       getEventId();

@@ -1,5 +1,7 @@
 import { create } from "zustand";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 const useUserStore = create((set) => ({
   user: null,
   setUser: (user: any) => set({ user }),
@@ -8,7 +10,7 @@ const useUserStore = create((set) => ({
   // clearUser: () => set({ user: null }),
   fetchUser: async () => {
     try {
-      const response = await fetch("http://localhost:3000/auth/me", {
+      const response = await fetch(apiUrl + "/auth/me", {
         method: "GET",
         credentials: "include",
       });

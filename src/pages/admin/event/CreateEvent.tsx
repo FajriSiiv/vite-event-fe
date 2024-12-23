@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import toast from "react-hot-toast";
 
 const CreateEvent = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [title, setTitle] = useState("");
   const [date, setDate] = useState<Date | any>();
   const [formatDate, setFormatDate] = useState<any>();
@@ -16,7 +17,6 @@ const CreateEvent = () => {
     if (selectedDate) {
       setDate(selectedDate);
       setFormatDate(format(selectedDate, "MM/dd/yyyy"));
-      console.log(typeof formatDate);
     } else {
       setDate(null);
       setFormatDate("");
@@ -26,7 +26,7 @@ const CreateEvent = () => {
   const eventCreate = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`http://localhost:3000/event`, {
+      const response = await fetch(`${apiUrl}/event`, {
         body: JSON.stringify({
           userId: user?.id,
           title: title,

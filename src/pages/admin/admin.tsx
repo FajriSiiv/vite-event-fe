@@ -1,8 +1,11 @@
 import { useNavigate, useSearchParams } from "react-router";
 import useUserStore from "../../context/useUserStore";
 import { useEffect, useState } from "react";
+import { format } from "date-fns";
+import { id } from "date-fns/locale";
 
 const AdminPage = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const router = useNavigate();
   const [allEvents, setAllEvents] = useState([]);
   const [pages, setPages] = useState(1);
@@ -20,13 +23,10 @@ const AdminPage = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(
-        `http://localhost:3000/event?limit=4&page=${pages}`,
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${apiUrl}/event?limit=4&page=${pages}`, {
+        method: "GET",
+        credentials: "include",
+      });
 
       const data = await response.json();
       setAllEvents(data.data || []);
@@ -72,15 +72,27 @@ const AdminPage = () => {
       <div className="col-span-4 flex flex-col gap-y-2">
         <div className="flex flex-col gap-y-3">
           <h1 className="text-3xl font-bold">Event yang tersedia</h1>
-          <div className="w-full min-h-[220px] bg-[#f3f3f3] p-4 rounded-md grid gap-3 grid-cols-4">
+          <div className="w-full min-h-[220px] bg-[#f3f3f3] p-4 rounded-md grid gap-3 grid-cols-4 md:flex md:flex-col">
             {allEvents.length === 0 && !isLoading && <p>No events found.</p>}
-            {allEvents?.map((event: { _id: any }, index) => (
+            {allEvents?.map((event: any, index) => (
               <div
-                className="bg-slate-400 rounded-md"
+                className="bg-slate-200 rounded-md"
                 onClick={() => handleEventClick(event._id)}
                 key={index}
               >
-                <div className="w-full h-[220px]"></div>
+                <div className="w-full h-[220px] flex flex-col justify-between p-5">
+                  <div className="flex flex-col">
+                    <span className="font-bold text-3xl">{event.title}</span>
+                    <span className="font-base text-1xl">
+                      {format(event.date, "eeee, dd-MM-yyyy", {
+                        locale: id,
+                      })}
+                    </span>
+                  </div>
+                  <span className="font-bold text-xl">
+                    Peserta : {event.users.length}
+                  </span>
+                </div>
               </div>
             ))}
           </div>
@@ -105,7 +117,7 @@ const AdminPage = () => {
       </div>
 
       <div
-        className="absolute bottom-5 right-5 h-10 w-10 rounded-full bg-emerald-500 flex justify-center items-center text-white font-black text-4xl cursor-pointer"
+        className="fixed bottom-5 right-5 h-10 w-10 rounded-full bg-emerald-500 flex justify-center items-center text-white font-black text-4xl cursor-pointer"
         onClick={() => router("/admin/event/create")}
       >
         +

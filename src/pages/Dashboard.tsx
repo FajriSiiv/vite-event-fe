@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import useUserStore from "../context/useUserStore";
 import toast from "react-hot-toast";
+import { format } from "date-fns";
+import { id } from "date-fns/locale";
 
 const Dashboard = () => {
   const [allEvents, setAllEvents] = useState([]);
@@ -9,6 +11,8 @@ const Dashboard = () => {
   const { user, fetchUser, isLoading, setIsLoading }: any = useUserStore();
   const [pages, setPages] = useState(1);
   const [isReady, setIsReady] = useState(false);
+
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -19,7 +23,7 @@ const Dashboard = () => {
   const logout = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:3000/auth/logout", {
+      const response = await fetch(apiUrl + "/auth/logout", {
         method: "POST",
         credentials: "include",
       });
@@ -31,7 +35,6 @@ const Dashboard = () => {
         router("/");
         toast.success(message);
       } else {
-        console.log(response);
         toast.error(message);
       }
     } catch (error) {
@@ -43,13 +46,10 @@ const Dashboard = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(
-        `http://localhost:3000/event?limit=4&page=${pages}`,
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${apiUrl}/event?limit=4&page=${pages}`, {
+        method: "GET",
+        credentials: "include",
+      });
       const data = await response.json();
       setAllEvents(data.data);
     } catch (error) {
@@ -96,11 +96,23 @@ const Dashboard = () => {
             {allEvents.map((event: any, index) => {
               return (
                 <div
-                  className="bg-slate-400 rounded-md"
+                  className="bg-slate-200 rounded-md"
                   onClick={() => handleEventClick(event._id)}
                   key={index}
                 >
-                  <div className="w-full h-[220px]"></div>
+                  <div className="w-full h-[220px] flex flex-col justify-between p-5">
+                    <div className="flex flex-col">
+                      <span className="font-bold text-3xl">{event.title}</span>
+                      <span className="font-base text-1xl">
+                        {format(event.date, "eeee, dd-MM-yyyy", {
+                          locale: id,
+                        })}
+                      </span>
+                    </div>
+                    <span className="font-bold text-xl">
+                      Peserta : {event.users.length}
+                    </span>
+                  </div>
                 </div>
               );
             })}

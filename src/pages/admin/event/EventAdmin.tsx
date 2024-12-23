@@ -6,6 +6,7 @@ import { DayPicker } from "react-day-picker";
 import toast from "react-hot-toast";
 
 const EventAdmin = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const { id } = useParams();
   const [title, setTitle] = useState("");
   const [date, setDate] = useState<Date | any>();
@@ -16,13 +17,10 @@ const EventAdmin = () => {
   const getEventId = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(
-        `http://localhost:3000/event/${id?.toString()}`,
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${apiUrl}/event/${id?.toString()}`, {
+        method: "GET",
+        credentials: "include",
+      });
       const data = await response.json();
 
       setTitle(data.title);
@@ -49,17 +47,14 @@ const EventAdmin = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(
-        `http://localhost:3000/event/${id?.toString()}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ title: title, date: formatDate }),
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${apiUrl}/event/${id?.toString()}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title: title, date: formatDate }),
+        credentials: "include",
+      });
 
       setIsLoading(false);
       getEventId();
@@ -78,22 +73,19 @@ const EventAdmin = () => {
   const deleteEvent = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(
-        `http://localhost:3000/event/${id?.toString()}`,
-        {
-          method: "DELETE",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${apiUrl}/event/${id?.toString()}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
 
       setIsLoading(false);
 
       if (response.ok) {
-        toast.success(`Berhasil meng-hapus ke event`);
+        toast.success(`Berhasil meng-hapus event`);
 
         router("/admin");
       } else {
-        toast.error(`Gagal meng-hapus ke event`);
+        toast.error(`Gagal meng-hapus event`);
       }
     } catch (error) {
       toast.error(`Error saat meng-hapus event`);
