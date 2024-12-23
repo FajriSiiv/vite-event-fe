@@ -5,7 +5,7 @@ import useUserStore from "../context/useUserStore";
 import toast from "react-hot-toast";
 
 const Login = () => {
-  const apiUrl = "http://localhost:3000";
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [name, setName] = useState("admin");
   const [password, setPassword] = useState("admin");
   const [checkUser, setCheckUser] = useState(false);
