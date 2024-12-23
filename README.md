@@ -1,50 +1,80 @@
-# React + TypeScript + Vite
+# TODO Frontend Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a frontend project built with **Vite** and **React** to implement a TODO application with features like login, events management, and user-specific actions. The project uses several libraries to enhance functionality and user experience.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Halaman Login
 
-## Expanding the ESLint configuration
+- [x] Form Login
+- [x] Validation Form API ke Backend
+- [x] Tombol **Login** yang mengirimkan data ke backend
+- [x] Menangani respond JWT
+- [x] Redirect ke Mainpage jika login sukses
+- [x] Tampilkan error jika gagal login
+- [x] Small Validation Form
+- [x] Toast Notif (Error, Success) Login
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Halaman Mainpage
 
-- Configure the top-level `parserOptions` property like this:
+- [x] Design Mainpage
+- [x] Menampilkan data Event setelah login
+- [x] Tampilkan nama pengguna dan beberapa data terkait
+- [x] Tampilkan event yang ada
+- [x] Link navigasi ke halaman **Events**
+- [x] Implementasikan logout (hapus token JWT dan redirect ke halaman login)
+- [x] Menangani error dan loading state
+- [x] Toast Notif (User welcome)
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### Halaman Events (Admin)
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- [x] Ambil daftar event dari backend (`GET /events`)
+- [x] Tampilkan daftar event dengan nama, tanggal, pengguna yang terdaftar
+- [x] Pagination jika ada banyak event
+- [x] Buat Event ke API
+- [x] Update Event ke API
+- [x] Delete Event ke API
+- [x] Loading State CRUD (Create, Read, Update, Delete)
+- [x] Mengamankan Route admin CUD (Create, Update, Delete)
+- [x] Toast Notif (Error, Success, Update) Event
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### User Practice
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- [x] Pagination jika ada banyak event
+- [x] Login/Logout with JWT
+- [x] Join the event for the user
+- [x] GET Mainpage event data
+
+## NPM Packages
+
+| Package                                               | Version | Description                           |
+| ----------------------------------------------------- | ------- | ------------------------------------- |
+| [react-router](https://reactrouter.com/)              | 7.0.2   | Routing for React applications        |
+| [TailwindCSS](https://tailwindcss.com/)               | 3.4.17  | Utility-first CSS framework           |
+| [Zustand](https://zustand.docs.pmnd.rs/)              | 5.0.2   | State management library              |
+| [Daypicker](https://daypicker.dev/)                   | 9.4.4   | Date picker component                 |
+| [date-fns](https://date-fns.org/docs/Getting-Started) | 4.1.0   | Utility library for date manipulation |
+| [react-hot-toast](https://react-hot-toast.com/)       | 2.4.1   | Notification system                   |
+
+## Reusable Components
+
+Reusable components are created to ensure consistency and reduce redundancy across the project.
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v16 or later)
+- npm (v8 or later) or yarn
+
+## Project Structure
+
+- **`src/components`**: Contains reusable components.
+- **`src/pages`**: Contains pages for Login, Mainpage, and Events.
+- **`src/store`**: Zustand store for state management.
+- **`src/styles`**: Tailwind CSS configuration and custom styles.
+- **`src/utils`**: Utility functions like API calls and helpers.
+
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.
