@@ -24,7 +24,7 @@ const ProtectedRoute = () => {
           toast.error(`${message.message}`);
         }
       } catch (error) {
-        console.log("Error");
+        console.log("error");
       } finally {
         setLoading(false);
       }

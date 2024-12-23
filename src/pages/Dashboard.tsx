@@ -70,7 +70,7 @@ const Dashboard = () => {
       <div className="col-span-4 flex flex-col gap-y-2">
         <div className="flex flex-col gap-y-3">
           <h1 className="text-3xl font-bold">Event yang tersedia</h1>
-          <div className="w-full min-h-[220px] bg-[#f3f3f3] p-4 rounded-md grid gap-3 grid-cols-4">
+          <div className="w-full min-h-[220px] bg-[#f3f3f3] p-4 rounded-md grid gap-3 grid-cols-4 sm:flex sm:flex-col">
             {allEvents.map((event: any, index) => {
               return (
                 <div

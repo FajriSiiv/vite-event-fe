@@ -5,10 +5,10 @@ import useUserStore from "../context/useUserStore";
 import toast from "react-hot-toast";
 
 const Login = () => {
-  const apiUrl = import.meta.env.VITE_API_URL;
-  const [name, setName] = useState("");
+  const apiUrl = "http://localhost:3000";
+  const [name, setName] = useState("admin");
+  const [password, setPassword] = useState("admin");
   const [checkUser, setCheckUser] = useState(false);
-  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const setUser = useUserStore((state: any) => state.setUser);

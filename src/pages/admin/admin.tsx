@@ -30,8 +30,6 @@ const AdminPage = () => {
 
       const data = await response.json();
       setAllEvents(data.data || []);
-
-      console.log();
     } catch (error) {
       console.error("Logout error:", error);
       alert("An error occurred during logout.");
