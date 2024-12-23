@@ -8,7 +8,7 @@ import { id } from "date-fns/locale";
 const Dashboard = () => {
   const [allEvents, setAllEvents] = useState([]);
   const router = useNavigate();
-  const { user, fetchUser, isLoading, setIsLoading }: any = useUserStore();
+  const { fetchUser, isLoading, setIsLoading }: any = useUserStore();
   const [pages, setPages] = useState(1);
   const [isReady, setIsReady] = useState(false);
 
@@ -18,28 +18,6 @@ const Dashboard = () => {
 
   const handleEventClick = (id: number) => {
     router("/event/" + id);
-  };
-
-  const logout = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(apiUrl + "/auth/logout", {
-        method: "POST",
-        credentials: "include",
-      });
-
-      setIsLoading(false);
-      const { message } = await response.json();
-
-      if (response.ok) {
-        router("/");
-        toast.success(message);
-      } else {
-        toast.error(message);
-      }
-    } catch (error) {
-      toast.error("Error logout");
-    }
   };
 
   const getAllEvents = async () => {
