@@ -2,6 +2,7 @@ import { useNavigate } from "react-router";
 import loginBg from "../assets/login-bg.jpg";
 import { useState } from "react";
 import useUserStore from "../context/useUserStore";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [name, setName] = useState("leonerss");
@@ -12,6 +13,16 @@ const Login = () => {
 
   const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+
+    if (name.length < 4 || password.length < 4) {
+      toast.error("nama/password harus lebih dari 4");
+      return;
+    }
+
+    if (name.length > 50 || password.length > 50) {
+      toast.error("nama/password tidak boleh dari 50");
+      return;
+    }
 
     const response = await fetch("http://localhost:3000/auth/login", {
       method: "POST",
@@ -26,10 +37,13 @@ const Login = () => {
       const data = await response.json();
       setUser(data.user);
       navigate("/dashboard");
+      toast.success("Login successfully!");
+      toast.success(`Welcome back, ${data.user.name}`);
     } else {
-      alert("Login failed!");
+      toast.error("Login failed!");
     }
   };
+
   return (
     <div className="w-full h-screen max-h-[1000px] flex relative">
       <div className="absolute top-10 left-10 rounded-full bg-white z-10 w-fit h-fit">

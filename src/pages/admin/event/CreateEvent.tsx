@@ -3,6 +3,7 @@ import useUserStore from "../../../context/useUserStore";
 import { useNavigate } from "react-router";
 import { DayPicker } from "react-day-picker";
 import { format } from "date-fns";
+import toast from "react-hot-toast";
 
 const CreateEvent = () => {
   const [title, setTitle] = useState("");
@@ -38,15 +39,19 @@ const CreateEvent = () => {
           "Content-Type": "application/json",
         },
       });
+
+      const data = await response.json();
+
       setIsLoading(false);
 
       if (response.ok) {
         router("/admin");
+        toast.success("Event berhasil dibuat");
       } else {
-        alert("Create event failed!");
+        toast.error(data.message.message[0] || "Event gagal dibuat");
       }
     } catch (error) {
-      console.log(error);
+      console.log("Error ketika membuat event");
     }
   };
 

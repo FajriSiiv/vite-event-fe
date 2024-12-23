@@ -1,17 +1,28 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router";
 import useUserStore from "../context/useUserStore";
+import toast from "react-hot-toast";
 
 const AdminRoute = () => {
   const { user, fetchUser }: any = useUserStore();
+  const [isNotAdmin, setIsNotAdmin] = useState(false);
 
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
 
-  if (user?.roles !== "admin") {
-    console.log("Kamu bukan admin");
+  useEffect(() => {
+    if (user && user.roles !== "admin") {
+      toast.error("Kamu bukan admin");
+      setIsNotAdmin(true);
+    }
+  }, [user]);
 
+  if (!user) {
+    return <div>Loading...</div>;
+  }
+
+  if (isNotAdmin) {
     return <Navigate to="/dashboard" />;
   }
 

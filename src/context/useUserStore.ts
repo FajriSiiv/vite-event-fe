@@ -13,8 +13,6 @@ const useUserStore = create((set) => ({
         credentials: "include",
       });
 
-      console.log("fetching user");
-
       if (response.ok) {
         const data = await response.json();
         set({ user: data });

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router";
 import useUserStore from "../../../context/useUserStore";
 import { format } from "date-fns";
 import { DayPicker } from "react-day-picker";
+import toast from "react-hot-toast";
 
 const EventAdmin = () => {
   const { id } = useParams();
@@ -62,10 +63,15 @@ const EventAdmin = () => {
 
       setIsLoading(false);
       getEventId();
+      const data = await response.json();
 
-      return response;
+      if (response.ok) {
+        toast.success(`Berhasil update ke event`);
+      } else {
+        toast.error(`Error : ${data.message}`);
+      }
     } catch (error) {
-      console.log(error);
+      toast.error(`Error saat update event`);
     }
   };
 
@@ -83,12 +89,14 @@ const EventAdmin = () => {
       setIsLoading(false);
 
       if (response.ok) {
+        toast.success(`Berhasil meng-hapus ke event`);
+
         router("/admin");
       } else {
-        alert("Logout failed!");
+        toast.error(`Gagal meng-hapus ke event`);
       }
     } catch (error) {
-      console.log(error);
+      toast.error(`Error saat meng-hapus event`);
     }
   };
 

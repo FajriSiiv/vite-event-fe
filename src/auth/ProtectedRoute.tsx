@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { Navigate, Outlet } from "react-router";
 
 const ProtectedRoute = () => {
@@ -7,17 +8,25 @@ const ProtectedRoute = () => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const response = await fetch("http://localhost:3000/event", {
-        method: "GET",
-        credentials: "include",
-      });
+      try {
+        const response = await fetch("http://localhost:3000/event", {
+          method: "GET",
+          credentials: "include",
+        });
+        const { message } = await response.json();
 
-      if (response.ok) {
-        setAuthenticated(true);
-      } else {
-        setAuthenticated(false);
+        if (response.ok) {
+          setAuthenticated(true);
+        } else {
+          setAuthenticated(false);
+          toast.error(`${message.error}`);
+          toast.error(`${message.message}`);
+        }
+      } catch (error) {
+        console.log("Error");
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     checkAuth();

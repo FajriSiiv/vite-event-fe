@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import useUserStore from "../../context/useUserStore";
+import toast from "react-hot-toast";
 
 const EventDetail = () => {
   const [eventID, setEventID] = useState<any>([]);
@@ -38,9 +39,15 @@ const EventDetail = () => {
           credentials: "include",
         }
       );
-
+      const data = await response.json();
       setIsLoading(false);
       getEventId();
+
+      if (response.ok) {
+        toast.success(`Berhasil mendaftar ke event`);
+      } else {
+        toast.error(`Error : ${data.message}`);
+      }
 
       return response;
     } catch (error) {
