@@ -67,14 +67,14 @@ const Login = () => {
             <input
               type="text"
               placeholder="Name"
-              className="bg-[#f3f3f3] px-4 py-3 rounded-full text-sm min-w-[400px]"
+              className="bg-[#f3f3f3] px-4 py-3 rounded-full text-sm min-w-[400px] xs:min-w-[250px]"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
             <input
               type="text"
               placeholder="Password"
-              className="bg-[#f3f3f3] px-4 py-3 rounded-full text-sm min-w-[400px]"
+              className="bg-[#f3f3f3] px-4 py-3 rounded-full text-sm min-w-[400px] xs:min-w-[250px]"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -101,7 +101,7 @@ const Login = () => {
         </div>
       </div>
       <div
-        className={`absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 min-h-fit w-2/3 bg-gray-900 z-20 rounded-md text-white ${
+        className={`absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 min-h-fit w-2/3 bg-gray-900 z-20 rounded-md text-white sm:w-[95%] ${
           !checkUser ? "hidden" : "block"
         }`}
       >
@@ -114,7 +114,7 @@ const Login = () => {
         <h2 className="text-center my-2 font-bold text-3xl">
           Login with this user
         </h2>
-        <div className="w-full h-full grid grid-cols-3 gap-5 p-5">
+        <div className="w-full h-full grid grid-cols-3 gap-5 p-5 sm:grid-cols-2">
           <div className="flex flex-col gap-y-2 p-2 bg-emerald-500 rounded-md">
             <span>Name : admin</span>
             <span>Password :admin</span>

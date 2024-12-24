@@ -6,14 +6,14 @@ const NotFoundPage = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      navigate("/");
+      navigate("/dashboard");
     }, 3000);
   }, [navigate]);
 
   return (
-    <div>
-      <h1>404 - Page Not Found</h1>
-      <p>Redirecting to login...</p>
+    <div className="flex h-screen w-full justify-center items-center flex-col gap-y-4">
+      <h1 className="text-3xl font-extrabold">404 - Page Not Found</h1>
+      <p>Redirecting to dashboard...</p>
     </div>
   );
 };

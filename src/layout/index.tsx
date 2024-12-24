@@ -30,9 +30,9 @@ const Layout = () => {
   };
 
   return (
-    <div className="w-full h-screen p-5 gap-10 grid grid-cols-5">
-      <div className="col-span-1 w-full h-full relative sm:hidden">
-        <div className="bg-[#f3f3f3] sticky top-10 w-full h-[300px] rounded-md flex flex-col gap-y-5 p-3">
+    <div className="w-full h-screen p-5 gap-10 grid grid-cols-5 sm:flex sm:flex-col">
+      <div className="col-span-1 w-full h-full relative">
+        <div className="bg-[#f3f3f3] sticky top-10 w-full h-[300px] rounded-md flex flex-col gap-y-5 p-3 sm:h-fit">
           <button
             className="w-full rounded-md bg-white py-3"
             onClick={() => router("/dashboard")}

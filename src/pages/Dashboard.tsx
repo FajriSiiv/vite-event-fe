@@ -70,7 +70,8 @@ const Dashboard = () => {
       <div className="col-span-4 flex flex-col gap-y-2">
         <div className="flex flex-col gap-y-3">
           <h1 className="text-3xl font-bold">Event yang tersedia</h1>
-          <div className="w-full min-h-[220px] bg-[#f3f3f3] p-4 rounded-md grid gap-3 grid-cols-4 sm:flex sm:flex-col">
+          <div className="w-full min-h-[220px] bg-[#f3f3f3] p-4 rounded-md grid gap-3 grid-cols-4 md:grid-cols-2 sm:flex sm:flex-col">
+            {allEvents.length === 0 && !isLoading && <p>No events found.</p>}
             {allEvents.map((event: any, index) => {
               return (
                 <div
@@ -78,7 +79,7 @@ const Dashboard = () => {
                   onClick={() => handleEventClick(event._id)}
                   key={index}
                 >
-                  <div className="w-full h-[220px] flex flex-col justify-between p-5">
+                  <div className="w-full h-[220px] flex flex-col justify-between p-5 overflow-hidden">
                     <div className="flex flex-col">
                       <span className="font-bold text-3xl">{event.title}</span>
                       <span className="font-base text-1xl">
