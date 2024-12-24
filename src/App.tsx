@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import EventDetail from "./pages/event/eventDetail";
@@ -13,6 +13,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" index element={<Login />} />
+      <Route path="*" element={<Navigate to="/" />} />
       <Route element={<ProtectedRoute />}>
         <Route element={<Layout />}>
           <Route element={<AdminRoute />}>
